@@ -1,0 +1,29 @@
+Crear un nuevo ciudadano
+POST
+http://localhost:4300/nuevoCiudadano
+{
+    "nombre":"prueba",
+    "apellido":"apellidoPrueba",
+    "alias":"juanitoAlimaña",
+    "fechaNacimiento":"2300-02-01",
+    "planetaOrigen":"namekuzeí",
+    "planetaResidencia":"tierra",
+    "foto":"urlFotoshñfudgsudv",
+    "qr":"gduwco47c3473483",
+    "estado":"1"
+}
+
+Obtener los ciudadanos
+GET
+http://localhost:4300/ciudadano
+
+Obtener ciudadano por código 
+GET
+http://localhost:4300/ciudadano/código
+
+Eliminar ciudadano 
+PUT
+http://localhost:4300/eliminarCiudadano
+{
+    "codigo":"1"    
+}

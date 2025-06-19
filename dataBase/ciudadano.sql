@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-06-2025 a las 00:24:29
+-- Tiempo de generación: 20-06-2025 a las 00:23:02
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.2.12
 
@@ -45,7 +45,12 @@ CREATE TABLE `ciudadano` (
 --
 
 INSERT INTO `ciudadano` (`codigo`, `nombre`, `apellido`, `alias`, `fechaNacimiento`, `planetaOrigen`, `planetaResidencia`, `foto`, `qr`, `estado`) VALUES
-(1, 'pepe', 'perez', 'elPepe', '2025-06-01 17:16:46', 'namekuzein', 'tierra', 'sads', 'sadsad', 1);
+(1, 'pepe', 'perez', 'elPepe', '2025-06-01 17:16:46', 'namekuzein', 'tierra', 'sads', 'sadsad', 0),
+(2, 'prueba', 'apellidoPrueba', 'juanitoAlimaña', '2300-02-01 00:00:00', 'namekuzeí', 'tierra', 'urlFotoshñfudgsudv', 'gduwco47c3473483', 1),
+(3, 'qr', 'qrPrueba', 'qrEnFuncionamiento', '2300-02-01 00:00:00', 'qr', 'qr', 'qr', '..\\public\\images\\undefinedqr.png', 1),
+(4, 'qr', 'qrPrueba', 'qrEnFuncionamiento', '2300-02-01 00:00:00', 'qr', 'qr', 'qr', '..\\public\\images\\undefinedqr.png', 1),
+(5, 'qr222222', 'qrPrueba', 'qrEnFuncionamiento', '2300-02-01 00:00:00', 'qr', 'qr', 'qr', '..\\public\\images\\5qrPrueba.png', 1),
+(6, 'qr222222', 'qrPrueba', 'qrEnFuncionamiento', '2300-02-01 00:00:00', 'qr', 'qr', 'qr', '..\\public\\images\\6qr222222.png', 1);
 
 --
 -- Índices para tablas volcadas
@@ -65,7 +70,7 @@ ALTER TABLE `ciudadano`
 -- AUTO_INCREMENT de la tabla `ciudadano`
 --
 ALTER TABLE `ciudadano`
-  MODIFY `codigo` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `codigo` bigint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
