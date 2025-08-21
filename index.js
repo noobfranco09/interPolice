@@ -1,11 +1,11 @@
 import express from 'express'
 import 'dotenv/config';
-import ciudadano from './src/js/main.js';
+import route from './src/ciudadano/ciudadano.route.js';
 import cors from 'cors';
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use('/',ciudadano);
+app.use('/ciudadano',route);
 /* 
 app.get('/ping', (req, res) => {
     res.send("pong")

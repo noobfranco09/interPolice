@@ -1,11 +1,11 @@
 import qrCode from "qrcode";
 import { join } from "path";
 import { mkdirSync } from "fs";
-import conexion from "../src/js/mySql.js";
+import conexion from "../conexionDataBase/conexion.js";
 async function crearQr(objeto) {
     try {
         //Se hace una consulta a la base de datos para traer el último codigo y se le suma uno para que cada qr quede correspondiente a su ciudadano
-        // si la base de datos está vacía,se inicia en q
+        // si la base de datos está vacía,se inicia en 1
     const query = "SELECT codigo FROM ciudadano ORDER BY codigo DESC LIMIT 1;";
       const [rows] = await conexion.query(query);
       let codigo;

@@ -1,6 +1,6 @@
-import express from "express";
-import conexion from "./mySql.js";
-import crearQr from "../../functions/generarQr.js";
+
+
+
 
 const ciudadano = express();
 
@@ -28,6 +28,7 @@ ciudadano.post("/nuevoCiudadano", async (req, res) => {
       foto: req.body.foto,
       estado: req.body.estado,
     };
+
     let qr = await crearQr(ciudadano);
     if (qr.length > 0) {
       let ciudadano = {
@@ -48,7 +49,7 @@ ciudadano.post("/nuevoCiudadano", async (req, res) => {
       let error = "algo falló en la creación del qr";
       throw error;
     }
-  } catch (error) {
+  } catc h (error) {
     console.log(`error en la creación del ciudadano : ${error}`);
     res.status(500).send("Error interno del servidor");
   }

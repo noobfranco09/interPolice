@@ -1,0 +1,1 @@
+import crearQr from "../../functions/generarQr.js";

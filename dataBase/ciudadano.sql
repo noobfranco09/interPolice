@@ -38,7 +38,7 @@ CREATE TABLE `ciudadano` (
   `foto` varchar(500) DEFAULT NULL,
   `qr` varchar(500) NOT NULL,
   `estado` tinyint DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `ciudadano`
