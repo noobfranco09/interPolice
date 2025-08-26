@@ -1,11 +1,11 @@
 import crearQr from "../../functions/generarQr.js";
+import * as model from "./ciudadano.model.js"
 
 
-export const traerTodosController = async (req, res) => {
+export const traerTodos = async (req, res) => {
 
     try {
-        const query = "select * from ciudadano;";
-        const [rows] = await conexion.query(query);
+        const [rows] = await model.traerTodosModel;
         console.log(rows);
         res.status(200).send(rows);
     } catch (error) {
@@ -14,7 +14,7 @@ export const traerTodosController = async (req, res) => {
     }
 };
 
-export const traerCiudadanoPorIdController = async (req, res) => {
+export const traerCiudadanoPorId = async (req, res) => {
     try {
         let codigo = req.params.id;
         let query = "select * from ciudadano where codigo = ?";
@@ -30,7 +30,7 @@ export const traerCiudadanoPorIdController = async (req, res) => {
     }
 };
 
-export const crearCiudadanoController = async (req, res) => {
+export const crearCiudadano = async (req, res) => {
     try {
         let ciudadano = {
             nombre: req.body.nombre,
