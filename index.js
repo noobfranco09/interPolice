@@ -1,6 +1,6 @@
 import express from 'express'
 import 'dotenv/config';
-import ruta from './src/ciudadano/ciudadano.route.js';
+import ruta from './src/modules/ciudadano/ciudadano.route.js';
 import cors from 'cors';
 const app = express();
 app.use(express.json());

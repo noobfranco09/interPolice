@@ -3,7 +3,7 @@ import * as controller from './ciudadano.controller.js';
 const ruta = express.Router();
 
 ruta.get('/ciudadano',controller.traerTodos);
-ruta.get('/ciudadano/:id',controller.traerCiudadanoPorId);
+ruta.get('/ciudadano/:codigo',controller.traerCiudadanoPorId);
 ruta.post('/ciudadano',controller.crearCiudadano);
 // ruta.put('/ciudadano/:id');
 // ruta.delete('/ciudadano/:id');

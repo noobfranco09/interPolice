@@ -1,20 +1,20 @@
 import qrCode from "qrcode";
 import { join } from "path";
 import { mkdirSync } from "fs";
-import conexion from "../conexionDataBase/conexion.js";
+import { conexion } from "../config/conexionDb.js";
 async function crearQr(objeto) {
-    try {
-        //Se hace una consulta a la base de datos para traer el último codigo y se le suma uno para que cada qr quede correspondiente a su ciudadano
-        // si la base de datos está vacía,se inicia en 1
+  try {
+    //Se hace una consulta a la base de datos para traer el último codigo y se le suma uno para que cada qr quede correspondiente a su ciudadano
+    // si la base de datos está vacía,se inicia en 1
     const query = "SELECT codigo FROM ciudadano ORDER BY codigo DESC LIMIT 1;";
-      const [rows] = await conexion.query(query);
-      let codigo;
-      if (rows.length > 0) {
-          codigo = rows[0].codigo+1;
-      } else {
-          codigo = 1;
-       }
-    const nombreArchivo = codigo+ objeto.nombre;
+    const [rows] = await conexion.execute(query);
+    let codigo;
+    if (rows.length > 0) {
+      codigo = rows[0].codigo + 1;
+    } else {
+      codigo = 1;
+    }
+    const nombreArchivo = codigo + objeto.nombre;
     const carpetaQr = "../public/images";
     //si la carpeta no existe se crea
     mkdirSync(carpetaQr, { recursive: true });
@@ -31,8 +31,8 @@ async function crearQr(objeto) {
     return rutaCompleta;
   } catch (error) {
     console.log(`Error en la función de creación del qr ${error} `);
-
     return "";
   }
 }
 export default crearQr;
+crearQr({ hola: "fhusfh" });
