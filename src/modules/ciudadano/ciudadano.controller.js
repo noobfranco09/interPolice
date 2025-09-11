@@ -1,5 +1,7 @@
 import crearQr from "../../../functions/generarQr.js";
 import * as model from "./ciudadano.model.js";
+import {filtrarCampos} from "../../../helpers/camposPermitidos.js";
+import { conexion } from "../../../config/conexionDb.js";
 
 export const traerTodos = async (req, res) => {
   try {
@@ -74,23 +76,106 @@ export const crearCiudadano = async (req, res) => {
 };
 
 export const editarCiudadano = async (req, res) => {
+  const conn = await conexion.getConnection();
   try {
-    const codigo = req.body.codigo;
-    const query = "update ciudadano set estado = 0 where codigo = ?";
-    let [rows] = await conexion.query(query, [codigo]);
-
-    if (rows.affectedRows > 0) {
-      res.status(200).send("ciudadano eliminado con éxito");
+    await conn.beginTransaction();
+    const codigo = req.params.codigo;
+    const camposPermitidos = [
+      "nombre",
+      "apellido",
+      "alias",
+      "fechaNacimiento",
+      "planetaOrigen",
+      "planetaResidencia",
+      "estado",
+    ];
+    let data = req.body;
+    let ciudadano = filtrarCampos(data, camposPermitidos);
+    if (ciudadano !== false) {
+      const rows = await model.actualizarCiudadano(conn, ciudadano, codigo);
+      if (rows.affectedRows > 0 ) {
+        let ciudadanoActualizado = await model.traerDatosCiudadano(conn,codigo);
+        if (ciudadanoActualizado !== null) {
+          let qrCreado = await crearQr(ciudadanoActualizado);
+          if (qrCreado.length > 0) {
+            let qrActualizado = await model.actualizarCiudadano(
+              conn,
+              { qr: `${qrCreado}` },
+              codigo
+            );
+            if (qrActualizado.affectedRows > 0 && qrActualizado) {
+              await conn.commit();
+              res.status(200).send("ciudadano editado con éxito");
+            } else {
+              await conn.rollback();
+              res.status(500).send("Error interno del servidor");
+            }
+          }
+        }else{
+          await conn.rollback();
+          res.status(404).send("Ciudadano no encontrado");
+        }
+      } else {
+        res.status(404).send("No existe el ciudadano");
+      }
     } else {
-      res.status(300).send("No existe el ciudadano");
+      throw new Error( "error en el la validación del objecto" );
     }
   } catch (error) {
-    console.log(`error en la eliminación del ciudadano : ${error}`);
+    console.log(`error en la edición del ciudadano : ${error}`);
     res.status(500).send("Error interno del servidor");
+  }
+  finally{
+    conn.release();
   }
 };
 
 export const eliminarCiudadano = async (req, res) => {
   try {
-  } catch (error) {}
+    const codigo = req.params.codigo;
+    const rows = await model.eliminarCiudadano(codigo)
+    if (rows !== false) {
+      res.status(200).send("Eliminado con éxito")
+    }else{
+      res.status(404).send("No se encontró el ciudadano")
+    }
+  } catch (error) {
+    console.log("Error en el controlador de eliminar ciudadano")
+    res.status(500).send({error:"error del servidor"})
+  }
 };
+
+
+export async function subirImagen(req, res) {
+  try {
+    const codigo = req.params.codigo;
+
+    if (!req.file) {
+      return res
+        .status(400)
+        .send({ status: "error", message: "No se subió archivo" });
+    }
+
+    // Construimos la URL accesible
+    const imageUrl = `/images/ciudadano/${req.file.filename}`;
+
+    // Guardar en DB
+    const result = await model.subirImagen(codigo,imageUrl);
+
+    if (result !== false) {
+      res.status(200).send({
+        status: "ok",
+        message: "Imagen subida correctamente",
+        imageUrl,
+      });
+    } else {
+      return res
+        .status(404)
+        .send({ status: "error", message: "Usuario no encontrado" });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .send({ status: "error", message: "Error interno del servidor" });
+  }
+}

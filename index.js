@@ -1,11 +1,13 @@
 import express from 'express'
 import 'dotenv/config';
 import ruta from './src/modules/ciudadano/ciudadano.route.js';
+import router from './src/modules/auth/auth.routes.js';
 import cors from 'cors';
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use('/ciudadano',ruta);
+app.use('/user',router);
 /* 
 app.get('/ping', (req, res) => {
     res.send("pong")
