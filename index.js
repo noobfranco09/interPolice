@@ -8,10 +8,10 @@ app.use(express.json());
 app.use(cors());
 app.use('/ciudadano',ruta);
 app.use('/user',router);
-/* 
-app.get('/ping', (req, res) => {
-    res.send("pong")
- }) */
+
+app.get("/", (req, res) => {
+  res.send("Está todo bien");
+});
 
 const port = process.env.APP_PORT || 3000;
 app.listen(process.env.APP_PORT, () => { console.log(`Api ejecuntandose en el puerto ${port}`); })
