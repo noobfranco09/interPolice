@@ -24,7 +24,7 @@ export const traerCiudadanoPorId = async (req, res) => {
   try {
     const codigo = req.params.codigo;
     const rows = await model.traerPorCodigo(codigo);
-    if (rows && rows.length > 0) {
+    if (rows !==false) {
       res.status(200).send(rows);
     } else {
       res.status(300).send({ message: "Usuario inexistente" });

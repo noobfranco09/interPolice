@@ -20,13 +20,7 @@ export const traerPorCodigo = async (codigo) => {
       "select * from ciudadano where codigo = ?",
       [codigo]
     );
-    if (rows) {
-      return rows;
-    } else {
-      throw new Error({
-        error: "Error al traer el ciudadano por codigo en el modelo",
-      });
-    }
+    return rows.length>0 ? rows :false;
   } catch (error) {
     console.log(error);
     return false;
