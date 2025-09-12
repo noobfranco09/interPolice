@@ -13,10 +13,14 @@ import { generarToken } from "../../../helpers/adminTokens.js";
 export async function getAllUsers(req, res) {
   try {
     const users = await getUsersDB();
-    res.status(200).send({
-      status: "ok",
-      data: users,
-    });
+    if (users !== false) {
+      res.status(200).send({
+        status: "ok",
+        data: users,
+      });
+    } else {
+      res.status(404).send("No hay usuarios para mostrar");
+    }
   } catch (error) {
     res.status(500).send({
       status: "error",
@@ -29,17 +33,14 @@ export async function getUserById(req, res) {
   try {
     const id = req.params.id;
     const user = await getUserporIdDB(id);
-    if (!user) {
-      throw {
-        status: "error",
-        message: "usuario no encontrado.",
-        statusCode: 404,
-      };
+    if (user !== false) {
+      res.status(200).send({
+        status: "ok",
+        data: user,
+      });
+    } else {
+      res.status(404).send("Usuario no encontrado");
     }
-    res.status(200).send({
-      status: "ok",
-      data: user,
-    });
   } catch (error) {
     res.status(500).send({
       status: "error",
@@ -53,7 +54,7 @@ export async function createUser(req, res) {
     let data = req.body;
     // Aquí debes añadir validaciones de entrada de datos --- passport-u otra libreria  !!!!!
     const result = await createUserDB(data);
-    if (result !== false && result.affectedRows > 0) {
+    if (result !== false ) {
       res.status(200).send("Usuario creado con éxito");
     } else {
       res
@@ -118,7 +119,7 @@ export async function authUser(req, res) {
 
     const user = await authUserDB(data);
     console.log(user);
-    if (user) {
+    if (user!== false) {
       const token = generarToken(user[0], process.env.TOKEN_LIFE);
       res.status(200).send({
         status: "ok",

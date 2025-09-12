@@ -6,10 +6,10 @@ import { conexion } from "../../../config/conexionDb.js";
 export const traerTodos = async (req, res) => {
   try {
     const rows = await model.traerTodosModel();
-    if (rows) {
+    if (rows!== false) {
       res.status(200).send(rows);
     } else {
-      res.status(300).send({ message: "No hay usuarios" });
+      res.status(404).send({ message: "No hay usuarios" });
     }
   } catch (error) {
     console.log(
@@ -27,7 +27,7 @@ export const traerCiudadanoPorId = async (req, res) => {
     if (rows !==false) {
       res.status(200).send(rows);
     } else {
-      res.status(300).send({ message: "Usuario inexistente" });
+      res.status(404).send({ message: "Usuario inexistente" });
     }
   } catch (error) {
     console.log(error);
@@ -61,13 +61,13 @@ export const crearCiudadano = async (req, res) => {
         estado: req.body.estado,
       };
       const rows = await model.crearCiudadano(ciudadano);
-      if (rows) {
+      if (rows!== false) {
         res.status(200).send("ciudadano creado con éxito");
       } else {
-        throw new Error({ message: "Error al crear el usuario" });
+         res.status(409).send("Este ciudadano ya se encuentra registrado");
       }
     } else {
-      throw new Error({ message: "Error al crear el qr" });
+      throw new Error( "Error al crear el qr" );
     }
   } catch (error) {
     console.log("error en la creación del ciudadano" + error);
@@ -75,7 +75,8 @@ export const crearCiudadano = async (req, res) => {
   }
 };
 
-export const editarCiudadano = async (req, res) => {
+export const 
+editarCiudadano = async (req, res) => {
   const conn = await conexion.getConnection();
   try {
     await conn.beginTransaction();
@@ -93,7 +94,7 @@ export const editarCiudadano = async (req, res) => {
     let ciudadano = filtrarCampos(data, camposPermitidos);
     if (ciudadano !== false) {
       const rows = await model.actualizarCiudadano(conn, ciudadano, codigo);
-      if (rows.affectedRows > 0 ) {
+      if (rows !== false ) {
         let ciudadanoActualizado = await model.traerDatosCiudadano(conn,codigo);
         if (ciudadanoActualizado !== null) {
           let qrCreado = await crearQr(ciudadanoActualizado);
